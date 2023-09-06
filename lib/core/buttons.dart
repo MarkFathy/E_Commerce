@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Generalbtn extends StatelessWidget {
-    Generalbtn({required this.text,super.key});
+    const Generalbtn({required this.text,super.key});
 
   final String text;
 
@@ -36,8 +36,8 @@ class Generalbtn extends StatelessWidget {
   }
 }
 class FirstBtn extends StatelessWidget {
-   FirstBtn({required this.text1,super.key,required this.onPressed});
-   String text1;
+   const FirstBtn({required this.text1,super.key,required this.onPressed});
+   final String text1;
    final VoidCallback? onPressed;
 
    @override
@@ -51,7 +51,7 @@ class FirstBtn extends StatelessWidget {
       ),
       child: TextButton(onPressed: onPressed,child: Text(text1,
       style: TextStyle(
-        fontSize: 18.sp,
+        fontSize: 18,
         fontWeight: FontWeight.w500,
         color: mainColor
       ),

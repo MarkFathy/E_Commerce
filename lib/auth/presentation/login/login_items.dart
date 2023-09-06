@@ -1,4 +1,5 @@
 import 'package:e_commerce/auth/presentation/login/cubit/login_cubit.dart';
+import 'package:e_commerce/auth/presentation/login/login_screen.dart';
 import 'package:e_commerce/auth/presentation/register/register_screen.dart';
 import 'package:e_commerce/core/buttons.dart';
 import 'package:e_commerce/core/colors.dart';
@@ -115,6 +116,7 @@ class LoginItems extends StatelessWidget {
                             email: cubit.emailController.text,
                             password: cubit.passController.text,
                           );
+                          navigateAndFinish(context, HomeScreen());
                         }
                       },
                       onChanged: (value)
@@ -154,6 +156,8 @@ class LoginItems extends StatelessWidget {
                               email: cubit.emailController.text,
                               password: cubit.passController.text,
                             );
+                            navigateAndFinish(context, HomeScreen());
+
                           }
 
                       },

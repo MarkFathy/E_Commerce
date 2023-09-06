@@ -1,9 +1,10 @@
 import 'package:e_commerce/auth/presentation/login/cubit/login_cubit.dart';
 import 'package:e_commerce/auth/presentation/login/login_screen.dart';
 import 'package:e_commerce/auth/presentation/register/cubit/register_cubit.dart';
+import 'package:e_commerce/auth/presentation/register/register_screen.dart';
 import 'package:e_commerce/core/colors.dart';
 import 'package:e_commerce/core/utilis/constants.dart';
-import 'package:e_commerce/features/presentation/onbording/cubit/on_boarding_cubit.dart';
+import 'package:e_commerce/features/presentation/onbording/onboarding.dart';
 import 'package:e_commerce/network/dio_helper.dart';
 import 'package:e_commerce/network/local/cache_helper.dart';
 import 'package:e_commerce/shop_layout/layouts/categories/categories.dart';
@@ -45,9 +46,6 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (BuildContext context) => OnBoardingCubit(),
-            ),
-            BlocProvider(
               create: (BuildContext context) => LoginCubit(),
             ),
             BlocProvider(
@@ -80,7 +78,7 @@ class MyApp extends StatelessWidget {
               ),
               scaffoldBackgroundColor: mainColor
             ),
-            home: HomeScreen(),
+            home:const HomeScreen(),
           ),
         );
 

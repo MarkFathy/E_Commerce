@@ -1,11 +1,7 @@
 import 'package:e_commerce/auth/presentation/login/login_screen.dart';
 import 'package:e_commerce/core/colors.dart';
 import 'package:e_commerce/core/navigation_const.dart';
-import 'package:e_commerce/features/presentation/onbording/cubit/on_boarding_cubit.dart';
-import 'package:e_commerce/features/presentation/onbording/cubit/on_boarding_cubit.dart';
-import 'package:e_commerce/features/presentation/onbording/cubit/on_boarding_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -25,9 +21,6 @@ class OnBoardingItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<OnBoardingCubit, OnBoardingStates>(
-      builder: (context, state) {
-        var cubit=OnBoardingCubit.get(context);
         List<BoardingModel> boarding = [
           BoardingModel(
               image: 'assets/images/1.png',
@@ -56,7 +49,7 @@ class OnBoardingItems extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                          navigateAndFinish(context, LoginScreen());
+                          navigateAndFinish(context, const LoginScreen());
                         },
                         child: Text(
                           'skip',
@@ -72,15 +65,8 @@ class OnBoardingItems extends StatelessWidget {
                 SizedBox(height: 50.h),
                 Expanded(
                   child: PageView.builder(
-                      onPageChanged: (int index) {
-                        if (index == boarding.length - 1) {
-                          cubit.setIsLast() ;
-                        } else {
-                          cubit.setIsLast();
-                        }
-                      },
                       controller: boardController,
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       itemBuilder: (context, index) =>
                           buildBoardingItem(boarding[index]),
                       itemCount: boarding.length),
@@ -94,16 +80,18 @@ class OnBoardingItems extends StatelessWidget {
                             activeDotColor: firstColor,
                             dotHeight: 10.h,
                             dotWidth: 10.w)),
-                    Spacer(),
+                    const Spacer(),
                     FloatingActionButton(
                       onPressed: () {
-                        boardController.nextPage(
-                            duration: Duration(microseconds: 800),
-                            curve: Curves.fastLinearToSlowEaseIn);
-                        if(cubit.setIsLast())
-                          {
-                            navigateAndFinish(context, LoginScreen());
-                          }
+                        if (boardController.page == boarding.length - 1) {
+                          navigateAndFinish(context, LoginScreen());
+
+                        } else {
+                          boardController.nextPage(
+                            duration: const Duration(microseconds: 800),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                          );
+                        }
                       },
                       backgroundColor: firstColor,
                       child: const Icon(
@@ -118,18 +106,17 @@ class OnBoardingItems extends StatelessWidget {
             ),
           ),
         );
-      },
-    );
+
   }
 
   Widget buildBoardingItem(BoardingModel model) => Column(
         children: [
-          Image(image: AssetImage('${model.image}')),
+          Image(image: AssetImage(model.image)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${model.title}',
+                model.title,
                 style: TextStyle(
                   fontSize: 30.sp,
                   fontWeight: FontWeight.bold,
@@ -137,9 +124,9 @@ class OnBoardingItems extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: 10),
+           SizedBox(height: 10.h),
           Text(
-            "${model.body}",
+            model.body,
             style: TextStyle(color: secondColor, fontWeight: FontWeight.bold),
           )
         ],

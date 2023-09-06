@@ -10,6 +10,11 @@ part 'register_state.dart';
 class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit() : super(RegisterInitial());
   static RegisterCubit get(context) => BlocProvider.of(context);
+  final GlobalKey<FormState> formKey=GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   bool isSecured = true;
   Widget togglePass() {
     return IconButton(

@@ -9,12 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterItems extends StatelessWidget {
-  RegisterItems({super.key});
+  const RegisterItems({super.key});
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +25,7 @@ class RegisterItems extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Form(
+              key: cubit.formKey,
               child: Column(
                 children: [
                   const Image(
@@ -38,7 +36,7 @@ class RegisterItems extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
                     child: DefaultTextField(
                       keyboardType: TextInputType.text,
-                      controller: nameController,
+                      controller: cubit.nameController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Name Can't be empty";
@@ -54,7 +52,7 @@ class RegisterItems extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
                     child: DefaultTextField(
                       keyboardType: TextInputType.text,
-                      controller: phoneController,
+                      controller: cubit.phoneController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Phone Can't be empty";
@@ -70,7 +68,7 @@ class RegisterItems extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
                     child: DefaultTextField(
                       keyboardType: TextInputType.emailAddress,
-                      controller: emailController,
+                      controller: cubit.emailController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Email Adress Can't be empty";
@@ -87,7 +85,7 @@ class RegisterItems extends StatelessWidget {
                     child: DefaultTextField(
                       obsecure: cubit.isSecured,
                       keyboardType: TextInputType.text,
-                      controller: passController,
+                      controller: cubit.passController,
                       suffix: cubit.togglePass(),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -96,6 +94,18 @@ class RegisterItems extends StatelessWidget {
                           return 'Password Cant be less than 5';
                         }
                         return null;
+                      },
+                      onFieldSubmitted: (value){
+                        if(cubit.formKey.currentState!.validate())
+                        {
+                          cubit.userRegister(
+                            email: cubit.emailController.text,
+                            password:cubit.passController.text,
+                            name: cubit.nameController.text,
+                            phone: cubit.passController.text,
+                          );
+                        }
+
                       },
 
                       hintText: 'Password',
@@ -109,11 +119,15 @@ class RegisterItems extends StatelessWidget {
                     FirstBtn(
                       text1: 'Sign Up',
                       onPressed: () {
-                        cubit.userRegister(
-                            name:nameController.text,
-                            email: emailController.text,
-                            password: passController.text,
-                            phone: phoneController.text);
+                        if(cubit.formKey.currentState!.validate())
+                        {
+                          cubit.userRegister(
+                            email: cubit.emailController.text,
+                            password:cubit.passController.text,
+                            name: cubit.nameController.text,
+                            phone: cubit.passController.text,
+                          );
+                        }
                       },
                     ),
 
