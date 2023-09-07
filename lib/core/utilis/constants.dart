@@ -1,7 +1,7 @@
 import 'package:e_commerce/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
 
-String token =CacheHelper.getData(key: 'token');
+var token =CacheHelper.getData(key: 'token');
 // دي ميثود بتطبع التيكست كله لما اكون بستخدم api كبير مثلا
 
 void printFullText(String text){

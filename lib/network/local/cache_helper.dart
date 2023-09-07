@@ -35,7 +35,7 @@ class CacheHelper {
     required String key,
   })
   {
-    return sharedPreferences!.get(key);
+    return sharedPreferences?.get(key);
   }
 
 }

@@ -1,3 +1,4 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:e_commerce/auth/presentation/login/cubit/login_cubit.dart';
 import 'package:e_commerce/auth/presentation/login/login_screen.dart';
 import 'package:e_commerce/auth/presentation/register/cubit/register_cubit.dart';
@@ -5,6 +6,7 @@ import 'package:e_commerce/auth/presentation/register/register_screen.dart';
 import 'package:e_commerce/core/colors.dart';
 import 'package:e_commerce/core/utilis/constants.dart';
 import 'package:e_commerce/features/presentation/onbording/onboarding.dart';
+import 'package:e_commerce/features/splash_screen/splash_screen.dart';
 import 'package:e_commerce/network/dio_helper.dart';
 import 'package:e_commerce/network/local/cache_helper.dart';
 import 'package:e_commerce/shop_layout/layouts/categories/categories.dart';
@@ -26,8 +28,9 @@ void main() async{
       statusBarBrightness: Brightness.dark,
     )
   );
+  print('the token is : ${token}');
   DioHelper.init();
-  await CacheHelper.init();
+  // await CacheHelper.init();
   runApp(const MyApp());
 
 
@@ -78,7 +81,7 @@ class MyApp extends StatelessWidget {
               ),
               scaffoldBackgroundColor: mainColor
             ),
-            home:const HomeScreen(),
+            home:SplashScreen()
           ),
         );
 

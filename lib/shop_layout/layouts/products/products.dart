@@ -2,6 +2,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/core/colors.dart';
+import 'package:e_commerce/core/utilis/constants.dart';
 import 'package:e_commerce/core/utilis/size_config.dart';
 import 'package:e_commerce/network/models/categories_model.dart';
 import 'package:e_commerce/network/models/home_model.dart';
@@ -31,7 +32,7 @@ class ProductsScreen extends StatelessWidget {
   }
 
   Widget builderWidget(HomeModel model, CategoriesModel categoriesModel, context) => SingleChildScrollView(
-    physics: BouncingScrollPhysics(),
+    physics: const BouncingScrollPhysics(),
     child: Padding(
       padding: const EdgeInsets.all(5.0),
       child: Column(
@@ -120,7 +121,7 @@ class ProductsScreen extends StatelessWidget {
                 if(model.discount != 0)
                   Container(
 
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     color: firstColor,
                     child: Text('Discount',
                       style: TextStyle(fontSize: 10.sp,
@@ -178,11 +179,12 @@ class ProductsScreen extends StatelessWidget {
                           ),
 
                         ),
-                      Spacer(),
+                      const Spacer(),
                       IconButton(onPressed: () {
+                        print('the token is : ${token}');
                         HomeCubit.get(context).changeFav(model.id);
                       },
-                          icon: Icon(Icons.favorite_outline)),
+                          icon: const Icon(Icons.favorite_outline)),
 
                     ],
                   ),
@@ -198,11 +200,12 @@ class ProductsScreen extends StatelessWidget {
   Widget categoriesBuilder(Data1 data1) =>
       Column(
         children: [
-          CircleAvatar(
-            radius: 30.r,
-           backgroundImage: NetworkImage('${data1.image}'
+          Container(
+            width: 80.w,
+            height: 70.h,
+            child: Image(image: NetworkImage('${data1.image}',)
             ),
-          ),
+            ),
           Text('${data1.name}',
             style:const TextStyle(
               fontWeight: FontWeight.w500,
