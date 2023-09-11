@@ -1,6 +1,7 @@
 
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:e_commerce/core/colors.dart';
 import 'package:e_commerce/core/utilis/constants.dart';
 import 'package:e_commerce/core/utilis/size_config.dart';
@@ -10,23 +11,44 @@ import 'package:e_commerce/shop_layout/layouts/home/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
+  Future<bool> checkInternetConnectivity() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult != ConnectivityResult.none;
+  }
+
+  void showNoInternetAlert() {
+    Fluttertoast.showToast(
+      msg: "No Internet Connection",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
+    checkInternetConnectivity();
     return BlocConsumer<HomeCubit, HomeStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+      },
       builder: (context, state) {
         var cubit = HomeCubit.get(context);
-        if (cubit.homeModel == null || cubit.homeModel!.data == null || cubit.categoriesModel!.data == null || cubit.categoriesModel== null ) {
+        if (cubit.homeModel == null ||
+            cubit.homeModel!.data == null ||
+            cubit.categoriesModel == null ||
+            cubit.categoriesModel!.data == null) {
           return Center(
             child: CircularProgressIndicator(color: firstColor),
           );
         }
-        return builderWidget(cubit.homeModel!,cubit.categoriesModel!,context);
+
+        return builderWidget(cubit.homeModel!, cubit.categoriesModel!, context);
       },
     );
   }
@@ -182,7 +204,8 @@ class ProductsScreen extends StatelessWidget {
                       const Spacer(),
                       IconButton(onPressed: () {
                         print('the token is : ${token}');
-                        HomeCubit.get(context).changeFav(model.id);
+                        //HomeCubit.get(context).changeFav(model.id);
+                        //HomeCubit.get(context).getProfileData();
                       },
                           icon: const Icon(Icons.favorite_outline)),
 
@@ -205,7 +228,7 @@ class ProductsScreen extends StatelessWidget {
             height: 70.h,
             child: Image(image: NetworkImage('${data1.image}',)
             ),
-            ),
+          ),
           Text('${data1.name}',
             style:const TextStyle(
               fontWeight: FontWeight.w500,

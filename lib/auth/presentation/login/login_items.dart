@@ -1,5 +1,4 @@
 import 'package:e_commerce/auth/presentation/login/cubit/login_cubit.dart';
-import 'package:e_commerce/auth/presentation/login/login_screen.dart';
 import 'package:e_commerce/auth/presentation/register/register_screen.dart';
 import 'package:e_commerce/core/buttons.dart';
 import 'package:e_commerce/core/colors.dart';
@@ -34,11 +33,11 @@ class LoginItems extends StatelessWidget {
                   ),
               );
 
-              // CacheHelper.saveData(
-              //     key: 'token', value: state.loginModel.data?.token).then((
-              //     value) {
-              //   navigateAndFinish(context, const HomeScreen());
-              // });
+              CacheHelper.saveData(
+                  key: 'token', value: state.loginModel.data?.token).then((
+                  value) {
+                navigateAndFinish(context, const HomeScreen());
+              });
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('${state.loginModel.message}'),
@@ -98,7 +97,7 @@ class LoginItems extends StatelessWidget {
                       keyboardType: TextInputType.text,
                       controller: cubit.passController,
                       obsecure: cubit.isSecured,
-                      suffix: cubit.togglePass(),
+                      suffixIcon: cubit.togglePass(),
                       hintText: 'Password',
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -116,7 +115,6 @@ class LoginItems extends StatelessWidget {
                             email: cubit.emailController.text,
                             password: cubit.passController.text,
                           );
-                          navigateAndFinish(context, HomeScreen());
                         }
                       },
                       onChanged: (value)
@@ -156,7 +154,6 @@ class LoginItems extends StatelessWidget {
                               email: cubit.emailController.text,
                               password: cubit.passController.text,
                             );
-                            navigateAndFinish(context, HomeScreen());
 
                           }
 

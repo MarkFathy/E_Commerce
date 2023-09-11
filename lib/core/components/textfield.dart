@@ -7,11 +7,14 @@ class DefaultTextField extends StatelessWidget {
   final FormFieldValidator<String> validator;
   final bool obsecure;
   final TextInputType keyboardType;
-  final ValueChanged<String> onChanged;
-  final String hintText;
-  final Widget? suffix;
+  final ValueChanged<String>? onChanged;
+  final String? hintText;
+  final String? labelText;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final VoidCallback? onEditingCompleted;
   final ValueChanged<String>? onFieldSubmitted;
+  final bool readOnly;
 
 
 
@@ -22,9 +25,12 @@ class DefaultTextField extends StatelessWidget {
     required this.validator,
     this.keyboardType = TextInputType.text,
     this.obsecure = false,
-    this.suffix,
-    required this.hintText,
-    required this.onChanged,
+    this.readOnly = false,
+    this.suffixIcon,
+    this.prefixIcon,
+    this.hintText,
+    this.labelText,
+    this.onChanged,
     this.onEditingCompleted,
     this.onFieldSubmitted,
 
@@ -41,8 +47,9 @@ class DefaultTextField extends StatelessWidget {
       onChanged: onChanged,
       onEditingComplete: onEditingCompleted,
       cursorColor: firstColor,
+      readOnly: readOnly,
       decoration: InputDecoration(
-        suffixIcon:suffix,
+        suffixIcon:suffixIcon,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(25.0).r),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -56,8 +63,8 @@ class DefaultTextField extends StatelessWidget {
 }
 
 class OTPTextField extends StatelessWidget {
-  OTPTextField({required onSaved,super.key});
-   FormFieldSetter<String>? onSaved;
+  const OTPTextField({this.onSaved,super.key});
+   final FormFieldSetter<String>? onSaved;
 
   @override
   Widget build(BuildContext context) {

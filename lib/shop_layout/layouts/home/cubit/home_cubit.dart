@@ -4,6 +4,7 @@ import 'package:e_commerce/network/models/categories_model.dart';
 import 'package:e_commerce/network/models/changeFav_model.dart';
 import 'package:e_commerce/network/models/favourites_model.dart';
 import 'package:e_commerce/network/models/home_model.dart';
+import 'package:e_commerce/network/models/profile_model.dart';
 import 'package:e_commerce/shop_layout/layouts/categories/categories.dart';
 import 'package:e_commerce/shop_layout/layouts/favourites/favourites.dart';
 import 'package:e_commerce/shop_layout/layouts/products/products.dart';
@@ -21,7 +22,7 @@ class HomeCubit extends Cubit<HomeStates> {
     ProductsScreen(),
     const CategoriesScreen(),
     const FavouritesScreen(),
-    const SettingsScreen()
+    SettingsScreen()
   ];
   void changeBottom(int index) {
     currentIndex = index;
@@ -34,16 +35,16 @@ class HomeCubit extends Cubit<HomeStates> {
     DioHelper.getData(url: HOME).then((value) {
       homeModel = HomeModel.fromJson(value.data);
       printFullText(homeModel!.data!.banners.toString());
-      emit(CategoriesSuccessState());
+      emit(HomeSuccessState());
     }).catchError((error) {
       print(error.toString());
-      emit(CategoriesErrorState());
+      emit(HomeErrorState());
     });
   }
 
   CategoriesModel? categoriesModel;
   void getCategoriesData() {
-    emit(HomeLoadingState());
+    emit(CategoriesLoadingState());
     DioHelper.getData(url: CATEGORIES).then((value) {
       categoriesModel = CategoriesModel.fromJson(value.data);
       printFullText(categoriesModel!.data.toString());
@@ -56,6 +57,7 @@ class HomeCubit extends Cubit<HomeStates> {
   ChangeFavModel? changeFavModel;
 
   void changeFav(int productId) {
+    emit(FavouritesLoadingState());
     DioHelper.postData(url: Favourites,token: token ,data: {'product_id': 1}).then((value) {
       changeFavModel =ChangeFavModel.fromJson(value!.data);
       emit(FavouritesSuccessState());
@@ -67,7 +69,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
   FavouritesModel? favouritesModel;
   void getFavouritesData() {
-    emit(HomeLoadingState());
+    emit(FavouritesLoadingState());
     DioHelper.getData(url: Favourites).then((value) {
       favouritesModel = FavouritesModel.fromJson(value.data);
       printFullText(favouritesModel!.data.toString());
@@ -77,4 +79,17 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(FavouritesErrorState());
     });
   }
+  ProfileModel? profileModel;
+  void getProfileData() {
+    emit(ProfileLoadingState());
+    DioHelper.getData(url: PROFILE ,token: token).then((value) {
+      profileModel = ProfileModel.fromJson(value.data);
+      printFullText(profileModel!.data!.id.toString());
+      emit(ProfileSuccessState(profileModel!));
+    }).catchError((error) {
+      print(error.toString());
+      emit(ProfileErrorState());
+    });
+  }
+
 }

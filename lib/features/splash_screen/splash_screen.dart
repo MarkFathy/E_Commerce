@@ -22,7 +22,3 @@ class SplashScreen extends StatelessWidget {
   }
 }
 
-// SpinKitThreeBounce(
-// color: firstColor,
-// size: 30.0,
-// ),

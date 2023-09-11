@@ -1,4 +1,3 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:e_commerce/auth/presentation/login/cubit/login_cubit.dart';
 import 'package:e_commerce/auth/presentation/login/login_screen.dart';
 import 'package:e_commerce/auth/presentation/register/cubit/register_cubit.dart';
@@ -28,9 +27,10 @@ void main() async{
       statusBarBrightness: Brightness.dark,
     )
   );
-  print('the token is : ${token}');
   DioHelper.init();
-  // await CacheHelper.init();
+  await CacheHelper.init();
+  token =CacheHelper.getData(key: 'token');
+  print('the token is : ${token}');
   runApp(const MyApp());
 
 
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
               create: (BuildContext context) => RegisterCubit(),
             ),
             BlocProvider(
-              create: (BuildContext context) => HomeCubit()..getHomeData()..getCategoriesData()..getFavouritesData(),
+              create: (BuildContext context) => HomeCubit()..getHomeData()..getCategoriesData()..getFavouritesData()..getProfileData(),
             ),
 
           ],

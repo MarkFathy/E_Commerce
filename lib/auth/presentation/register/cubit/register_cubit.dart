@@ -1,10 +1,9 @@
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_commerce/network/dio_helper.dart';
 import 'package:e_commerce/network/end_points.dart';
+import 'package:e_commerce/network/models/register_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 part 'register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
@@ -23,10 +22,11 @@ class RegisterCubit extends Cubit<RegisterState> {
         emit(TogglePasswordState(isSecured));
 
       },
-      icon: isSecured ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+      icon: isSecured ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
       color: Colors.grey,
     );
   }
+  RegisterModel? registerModel;
   void userRegister(
       {required String name,
       required String phone,
@@ -41,6 +41,8 @@ class RegisterCubit extends Cubit<RegisterState> {
         'password': password,
       });
       print(value?.data.toString());
+      registerModel=RegisterModel.fromJson(value!.data);
+
       emit(RegisterSuccessState());
     } catch (error) {
       print(error.toString());

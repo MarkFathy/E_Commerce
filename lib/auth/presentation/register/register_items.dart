@@ -15,7 +15,10 @@ class RegisterItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegisterCubit, RegisterState>(
+    return BlocConsumer<RegisterCubit, RegisterState>(
+      listener: (context,state){
+
+      },
       builder: (context, state) {
         var cubit=RegisterCubit.get(context);
         return Scaffold(
@@ -86,7 +89,7 @@ class RegisterItems extends StatelessWidget {
                       obsecure: cubit.isSecured,
                       keyboardType: TextInputType.text,
                       controller: cubit.passController,
-                      suffix: cubit.togglePass(),
+                      suffixIcon: cubit.togglePass(),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Password Cant be empty';
