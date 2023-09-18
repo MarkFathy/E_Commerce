@@ -1,9 +1,7 @@
 
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:connectivity/connectivity.dart';
-import 'package:e_commerce/core/colors.dart';
-import 'package:e_commerce/core/utilis/constants.dart';
+import 'package:e_commerce/core/components/colors.dart';
 import 'package:e_commerce/core/utilis/size_config.dart';
 import 'package:e_commerce/network/models/categories_model.dart';
 import 'package:e_commerce/network/models/home_model.dart';
@@ -15,27 +13,29 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
-  Future<bool> checkInternetConnectivity() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    return connectivityResult != ConnectivityResult.none;
-  }
 
-  void showNoInternetAlert() {
-    Fluttertoast.showToast(
-      msg: "No Internet Connection",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    checkInternetConnectivity();
     return BlocConsumer<HomeCubit, HomeStates>(
       listener: (context, state) {
+        if(state is ChangeFavouritesSuccessState)
+          {
+            if (state.model.status != null && !state.model.status!) {
+
+              Fluttertoast.showToast(
+              msg:'${state.model.message}',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red.withOpacity(0.7),
+              textColor: Colors.white,
+              fontSize: 16.0,
+              );
+
+              }
+          }
       },
       builder: (context, state) {
         var cubit = HomeCubit.get(context);
@@ -90,7 +90,7 @@ class ProductsScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: SizeConfig.defaultSize! * 4),
-          Container(
+          SizedBox(
             height: SizeConfig.defaultSize! * 12,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
@@ -169,6 +169,7 @@ class ProductsScreen extends StatelessWidget {
 
 
                   ),
+                  SizedBox(height:5.h),
                   Row(
                     children: [
                       Text('${model.price}',
@@ -202,12 +203,18 @@ class ProductsScreen extends StatelessWidget {
 
                         ),
                       const Spacer(),
-                      IconButton(onPressed: () {
-                        print('the token is : ${token}');
-                        //HomeCubit.get(context).changeFav(model.id);
-                        //HomeCubit.get(context).getProfileData();
-                      },
-                          icon: const Icon(Icons.favorite_outline)),
+                      CircleAvatar(
+                        radius: 17.r,
+                        backgroundColor:HomeCubit.get(context).favourites[model.id]==true ?firstColor :Colors.grey
+                        ,
+                        child: IconButton(onPressed: () {
+                          HomeCubit.get(context).changeFav(model.id);
+                          print(HomeCubit.get(context).favourites[model.id].toString());
+                        },
+                            icon: Icon(Icons.favorite_outline,
+                                color: mainColor,
+                                size: 22)),
+                      ),
 
                     ],
                   ),
@@ -223,7 +230,7 @@ class ProductsScreen extends StatelessWidget {
   Widget categoriesBuilder(Data1 data1) =>
       Column(
         children: [
-          Container(
+          SizedBox(
             width: 80.w,
             height: 70.h,
             child: Image(image: NetworkImage('${data1.image}',)

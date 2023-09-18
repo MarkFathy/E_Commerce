@@ -1,9 +1,10 @@
 import 'package:e_commerce/auth/presentation/login/cubit/login_cubit.dart';
 import 'package:e_commerce/auth/presentation/register/register_screen.dart';
-import 'package:e_commerce/core/buttons.dart';
-import 'package:e_commerce/core/colors.dart';
+import 'package:e_commerce/core/components/buttons.dart';
+import 'package:e_commerce/core/components/colors.dart';
 import 'package:e_commerce/core/components/textfield.dart';
 import 'package:e_commerce/core/navigation_const.dart';
+import 'package:e_commerce/core/utilis/constants.dart';
 import 'package:e_commerce/network/local/cache_helper.dart';
 import 'package:e_commerce/shop_layout/layouts/home/home.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +33,10 @@ class LoginItems extends StatelessWidget {
                     duration: const Duration(seconds: 2),
                   ),
               );
-
               CacheHelper.saveData(
                   key: 'token', value: state.loginModel.data?.token).then((
                   value) {
+                    token=state.loginModel.data!.token!;
                 navigateAndFinish(context, const HomeScreen());
               });
             } else {
@@ -115,6 +116,7 @@ class LoginItems extends StatelessWidget {
                             email: cubit.emailController.text,
                             password: cubit.passController.text,
                           );
+
                         }
                       },
                       onChanged: (value)

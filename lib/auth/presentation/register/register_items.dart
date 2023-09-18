@@ -1,8 +1,10 @@
 import 'package:e_commerce/auth/presentation/register/cubit/register_cubit.dart';
-import 'package:e_commerce/core/buttons.dart';
-import 'package:e_commerce/core/colors.dart';
+import 'package:e_commerce/core/components/buttons.dart';
+import 'package:e_commerce/core/components/colors.dart';
 import 'package:e_commerce/core/components/textfield.dart';
 import 'package:e_commerce/core/navigation_const.dart';
+import 'package:e_commerce/core/utilis/constants.dart';
+import 'package:e_commerce/network/local/cache_helper.dart';
 import 'package:e_commerce/shop_layout/layouts/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +19,35 @@ class RegisterItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<RegisterCubit, RegisterState>(
       listener: (context,state){
+        if(state is RegisterSuccessState) {
+          if (state.registerModel.status!) {
+            print(state.registerModel.message);
+            print('the token is: ${state.registerModel.data!.token}');
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('${state.registerModel.message}'),
+                backgroundColor: Colors.green,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+            CacheHelper.saveData(
+                key: 'token', value: state.registerModel.data?.token).then((
+                value) {
+              token=state.registerModel.data!.token!;
+              navigateAndFinish(context, const HomeScreen());
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('${state.registerModel.message}'),
+                  backgroundColor: Colors.red,
+                  duration: const Duration(seconds: 2),
+                )
+            );
+            print(state.registerModel.message);
+          }
+
+        }
+
 
       },
       builder: (context, state) {
@@ -105,7 +136,7 @@ class RegisterItems extends StatelessWidget {
                             email: cubit.emailController.text,
                             password:cubit.passController.text,
                             name: cubit.nameController.text,
-                            phone: cubit.passController.text,
+                            phone: cubit.phoneController.text,
                           );
                         }
 
@@ -128,7 +159,7 @@ class RegisterItems extends StatelessWidget {
                             email: cubit.emailController.text,
                             password:cubit.passController.text,
                             name: cubit.nameController.text,
-                            phone: cubit.passController.text,
+                            phone: cubit.phoneController.text,
                           );
                         }
                       },

@@ -16,9 +16,21 @@ class CategoriesSuccessState extends HomeStates {}
 class CategoriesErrorState extends HomeStates {}
 
 
-class FavouritesLoadingState extends HomeStates {}
-class FavouritesSuccessState extends HomeStates {}
-class FavouritesErrorState extends HomeStates {}
+
+class ChangeFavouritesState extends HomeStates {}
+class ChangeFavouritesLoadingState extends HomeStates {}
+class ChangeFavouritesSuccessState extends HomeStates {
+  final ChangeFavModel model;
+
+  ChangeFavouritesSuccessState(this.model);
+}
+class ChangeFavouritesErrorState extends HomeStates {}
+
+
+class GetFavouritesLoadingState extends HomeStates {}
+class GetFavouritesSuccessState extends HomeStates {}
+class GetFavouritesErrorState extends HomeStates {}
+
 
 
 class ProfileLoadingState extends HomeStates {}
@@ -31,6 +43,23 @@ class ProfileErrorState extends HomeStates {}
 
 
 
+
+class UpdateProfileLoadingState extends HomeStates {}
+class UpdateProfileSuccessState extends HomeStates {
+  final UpdateProfileModel updateProfileModel;
+
+  UpdateProfileSuccessState(this.updateProfileModel);
+}
+class UpdateProfileErrorState extends HomeStates {}
+
+
+class ProfileLogOutLoadingState extends HomeStates {}
+class ProfileLogOutSuccessState extends HomeStates {
+  final LogOutModel logOutModel;
+
+  ProfileLogOutSuccessState(this.logOutModel);
+}
+class ProfileLogOutErrorState extends HomeStates {}
 
 
 

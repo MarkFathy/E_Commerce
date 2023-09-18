@@ -1,12 +1,12 @@
 
-class FavouritesModel {
+class SearchModel {
   bool? status;
   dynamic message;
   Data? data;
 
-  FavouritesModel({this.status, this.message, this.data});
+  SearchModel({this.status, this.message, this.data});
 
-  FavouritesModel.fromJson(Map<String, dynamic> json) {
+  SearchModel.fromJson(Map<String, dynamic> json) {
     status = json["status"];
     message = json["message"];
     data = json["data"] == null ? null : Data.fromJson(json["data"]);
@@ -76,37 +76,19 @@ class Data {
 
 class Data1 {
   int? id;
-  Product? product;
-
-  Data1({this.id, this.product});
-
-  Data1.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
-    product = json["product"] == null ? null : Product.fromJson(json["product"]);
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> _data = <String, dynamic>{};
-    _data["id"] = id;
-    if(product != null) {
-      _data["product"] = product?.toJson();
-    }
-    return _data;
-  }
-}
-
-class Product {
-  int? id;
   int? price;
   int? oldPrice;
   int? discount;
   String? image;
   String? name;
   String? description;
+  List<String>? images;
+  bool? inFavorites;
+  bool? inCart;
 
-  Product({this.id, this.price, this.oldPrice, this.discount, this.image, this.name, this.description});
+  Data1({this.id, this.price, this.oldPrice, this.discount, this.image, this.name, this.description, this.images, this.inFavorites, this.inCart});
 
-  Product.fromJson(Map<String, dynamic> json) {
+  Data1.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     price = json["price"];
     oldPrice = json["old_price"];
@@ -114,6 +96,9 @@ class Product {
     image = json["image"];
     name = json["name"];
     description = json["description"];
+    images = json["images"] == null ? null : List<String>.from(json["images"]);
+    inFavorites = json["in_favorites"];
+    inCart = json["in_cart"];
   }
 
   Map<String, dynamic> toJson() {
@@ -125,6 +110,11 @@ class Product {
     _data["image"] = image;
     _data["name"] = name;
     _data["description"] = description;
+    if(images != null) {
+      _data["images"] = images;
+    }
+    _data["in_favorites"] = inFavorites;
+    _data["in_cart"] = inCart;
     return _data;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:e_commerce/auth/presentation/login/login_screen.dart';
-import 'package:e_commerce/core/colors.dart';
+import 'package:e_commerce/core/components/colors.dart';
 import 'package:e_commerce/core/navigation_const.dart';
+import 'package:e_commerce/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -18,6 +19,14 @@ class OnBoardingItems extends StatelessWidget {
 
   final PageController boardController = PageController();
   final bool isLast = false;
+  void submit(context)
+  {
+    CacheHelper.saveData(key: 'ONBOARDING', value: true).then((value) {
+
+      navigateAndFinish(context,const LoginScreen());
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +58,7 @@ class OnBoardingItems extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                          navigateAndFinish(context, const LoginScreen());
+                          submit(context);
                         },
                         child: Text(
                           'skip',
@@ -84,7 +93,7 @@ class OnBoardingItems extends StatelessWidget {
                     FloatingActionButton(
                       onPressed: () {
                         if (boardController.page == boarding.length - 1) {
-                          navigateAndFinish(context, LoginScreen());
+                          submit(context);
 
                         } else {
                           boardController.nextPage(

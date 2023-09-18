@@ -1,4 +1,4 @@
-import 'package:e_commerce/core/colors.dart';
+import 'package:e_commerce/core/components/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -50,9 +50,9 @@ class DefaultTextField extends StatelessWidget {
       readOnly: readOnly,
       decoration: InputDecoration(
         suffixIcon:suffixIcon,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(25.0).r),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0).r),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(15.0.r),
             borderSide: BorderSide(
               color: firstColor,
             )),
@@ -61,6 +61,67 @@ class DefaultTextField extends StatelessWidget {
     );
   }
 }
+
+
+class SearchTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final FormFieldValidator<String> validator;
+  final bool obsecure;
+  final TextInputType keyboardType;
+  final ValueChanged<String>? onChanged;
+  final String? hintText;
+  final String? labelText;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final VoidCallback? onEditingCompleted;
+  final ValueChanged<String>? onFieldSubmitted;
+  final bool readOnly;
+
+
+
+
+  const SearchTextField({
+    super.key,
+    required this.controller,
+    required this.validator,
+    this.keyboardType = TextInputType.text,
+    this.obsecure = false,
+    this.readOnly = false,
+    this.suffixIcon,
+    this.prefixIcon,
+    this.hintText,
+    this.labelText,
+    this.onChanged,
+    this.onEditingCompleted,
+    this.onFieldSubmitted,
+
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      onFieldSubmitted: onFieldSubmitted,
+      controller: controller,
+      validator: validator,
+      keyboardType: keyboardType,
+      obscureText: obsecure,
+      onChanged: onChanged,
+      onEditingComplete: onEditingCompleted,
+      cursorColor: firstColor,
+      readOnly: readOnly,
+      decoration: InputDecoration(
+        suffixIcon:suffixIcon,
+        border: const OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: firstColor,
+            )),
+        hintText: hintText,
+      ),
+    );
+  }
+}
+
 
 class OTPTextField extends StatelessWidget {
   const OTPTextField({this.onSaved,super.key});

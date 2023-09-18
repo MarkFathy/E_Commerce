@@ -1,5 +1,5 @@
 
-import 'package:e_commerce/core/colors.dart';
+import 'package:e_commerce/core/components/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,7 +19,7 @@ class Generalbtn extends StatelessWidget {
           },
             style:ElevatedButton.styleFrom(
               shape:RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.sp)
+                  borderRadius: BorderRadius.circular(15.r)
               ),
             ), child: Text(text,
           style: TextStyle(
@@ -46,7 +46,7 @@ class FirstBtn extends StatelessWidget {
       height: 35.h,
       width: 110.w,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25).r,
+        borderRadius: BorderRadius.circular(15).r,
         color: firstColor
       ),
       child: TextButton(onPressed: onPressed,child: Text(text1,

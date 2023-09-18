@@ -1,5 +1,6 @@
-import 'package:e_commerce/core/buttons.dart';
-import 'package:e_commerce/core/colors.dart';
+
+import 'package:e_commerce/core/components/buttons.dart';
+import 'package:e_commerce/core/components/colors.dart';
 import 'package:e_commerce/core/components/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

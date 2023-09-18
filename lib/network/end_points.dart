@@ -5,5 +5,7 @@ const HOME='home';
 const CATEGORIES='categories';
 const Favourites='favorites';
 const PROFILE ='profile';
-const UPDATE ='update-profile';
+const UPDATE_PROFILE ='update-profile';
+const SEARCH ='products/search';
+const LOGOUT ='logout';
 

@@ -4,7 +4,9 @@ import 'package:e_commerce/network/models/categories_model.dart';
 import 'package:e_commerce/network/models/changeFav_model.dart';
 import 'package:e_commerce/network/models/favourites_model.dart';
 import 'package:e_commerce/network/models/home_model.dart';
+import 'package:e_commerce/network/models/log_out_model.dart';
 import 'package:e_commerce/network/models/profile_model.dart';
+import 'package:e_commerce/network/models/update_profile_model.dart';
 import 'package:e_commerce/shop_layout/layouts/categories/categories.dart';
 import 'package:e_commerce/shop_layout/layouts/favourites/favourites.dart';
 import 'package:e_commerce/shop_layout/layouts/products/products.dart';
@@ -17,6 +19,8 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeStates> {
   HomeCubit() : super(HomeInitial());
   static HomeCubit get(context) => BlocProvider.of(context);
+  Map<int,bool?> favourites ={};
+
   int currentIndex = 0;
   List<Widget> bottomNavScreens = [
     ProductsScreen(),
@@ -35,6 +39,10 @@ class HomeCubit extends Cubit<HomeStates> {
     DioHelper.getData(url: HOME).then((value) {
       homeModel = HomeModel.fromJson(value.data);
       printFullText(homeModel!.data!.banners.toString());
+      for (var element in homeModel!.data!.products!) {
+        favourites.addAll({element.id:element.inFavorites});
+      }
+      print(favourites.toString());
       emit(HomeSuccessState());
     }).catchError((error) {
       print(error.toString());
@@ -54,29 +62,38 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(CategoriesErrorState());
     });
   }
-  ChangeFavModel? changeFavModel;
 
+
+
+  ChangeFavModel? changeFavModel;
   void changeFav(int productId) {
-    emit(FavouritesLoadingState());
-    DioHelper.postData(url: Favourites,token: token ,data: {'product_id': 1}).then((value) {
+    favourites[productId]= !favourites[productId]!;
+    emit(ChangeFavouritesState());
+
+    DioHelper.postData(url: Favourites,token: token ,data: {'product_id': productId}).then((value) {
       changeFavModel =ChangeFavModel.fromJson(value!.data);
-      emit(FavouritesSuccessState());
       print(value.data);
+         if(!(changeFavModel?.status ?? false)){
+           favourites[productId]= !favourites[productId]!;
+
+         }
+      emit(ChangeFavouritesSuccessState(changeFavModel!));
     }).catchError((error) {
-      emit(FavouritesErrorState());
+      favourites[productId]= !favourites[productId]!;
+      emit(ChangeFavouritesErrorState());
     });
   }
 
   FavouritesModel? favouritesModel;
   void getFavouritesData() {
-    emit(FavouritesLoadingState());
+    emit(GetFavouritesLoadingState());
     DioHelper.getData(url: Favourites).then((value) {
       favouritesModel = FavouritesModel.fromJson(value.data);
       printFullText(favouritesModel!.data.toString());
-      emit(FavouritesSuccessState());
+      emit(GetFavouritesSuccessState());
     }).catchError((error) {
       print(error.toString());
-      emit(FavouritesErrorState());
+      emit(GetFavouritesErrorState());
     });
   }
   ProfileModel? profileModel;
@@ -91,5 +108,44 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(ProfileErrorState());
     });
   }
+
+
+  UpdateProfileModel? updateProfileModel;
+  void updateProfileData({
+    required String name,
+    required String email,
+    required String phone,
+  }) {
+    emit(UpdateProfileLoadingState());
+    DioHelper.putData(url: UPDATE_PROFILE ,token: token, data: {
+      'name':name,
+      'email':email,
+      'phone':phone,
+    }).then((value) {
+      updateProfileModel = UpdateProfileModel.fromJson(value!.data);
+      printFullText(updateProfileModel!.data!.id.toString());
+      emit(UpdateProfileSuccessState(updateProfileModel!));
+    }).catchError((error) {
+      print(error.toString());
+      emit(UpdateProfileErrorState());
+    });
+  }
+  LogOutModel? logOutModel;
+  void profileLogOut({required String FcmToken}) {
+    emit(ProfileLogOutLoadingState());
+    DioHelper.postData(url: LOGOUT ,token: token, data: {
+      "fcm_token": FcmToken
+
+    }).then((value) {
+      logOutModel = LogOutModel.fromJson(value?.data);
+      printFullText(logOutModel!.data!.id.toString());
+      emit(ProfileLogOutSuccessState(logOutModel!));
+    }).catchError((error) {
+      print(error.toString());
+      emit(ProfileLogOutErrorState());
+    });
+  }
+
+
 
 }
